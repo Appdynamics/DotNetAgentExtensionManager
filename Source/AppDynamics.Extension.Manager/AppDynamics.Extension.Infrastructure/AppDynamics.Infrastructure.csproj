@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F6051B5F-F251-42A7-A38D-DE4E02F25431}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AppDynamics.Infrastructure</RootNamespace>
+    <AssemblyName>AppDynamics.Infrastructure</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AppDynamics.Extension.SDK, Version=1.0.4.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AppDynamics.Agent.ExtensionSdk.1.0.4.0\lib\net40\AppDynamics.Extension.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NLog.4.2.2\lib\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\EmptyExtension.cs" />
+    <Compile Include="Extensions\PerformanceCounterExtension.cs" />
+    <Compile Include="Extensions\WindowsServiceStatusMonitor.cs" />
+    <Compile Include="Extensions\PeriodicScriptMetricExtension.cs" />
+    <Compile Include="Extensions\WindowsRebootMonitor.cs" />
+    <Compile Include="Extensions\WindowsEventLogMonitor.cs" />
+    <Compile Include="Framework\Extension\ExtensionActivator.cs" />
+    <Compile Include="Framework\Extension\ExtensionException.cs" />
+    <Compile Include="Framework\Extension\ExtensionLoader.cs" />
+    <Compile Include="Framework\Extension\ExtensionContainer.cs" />
+    <Compile Include="Framework\Extension\Configuration\AgentConfig.cs" />
+    <Compile Include="Framework\Extension\Configuration\AppDynamicsAgentConfiguration.cs">
+      <DependentUpon>AppDynamicsAgentConfiguration.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Extension\Handlers\ConfigXMLHandler.cs" />
+    <Compile Include="Framework\Extension\Model\PerformanceCounterDetail.cs" />
+    <Compile Include="Framework\Extension\Providers\ControllerRestApiProvider.cs" />
+    <Compile Include="Framework\Extension\Handlers\PerformanceCounterHandler.cs" />
+    <Compile Include="Framework\Extension\Providers\IDataProvider.cs" />
+    <Compile Include="Helper\ControllerEventHelper.cs" />
+    <Compile Include="Helper\EnumToStringConverter.cs" />
+    <Compile Include="Helper\FileHelper.cs" />
+    <Compile Include="Helper\ServiceHelper.cs" />
+    <Compile Include="Framework\Extension\Handlers\ExtensionXMLHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceStrings.cs" />
+    <Compile Include="Framework\ViewModel\CommandViewModel.cs" />
+    <Compile Include="Framework\ViewModel\DelegateCommand.cs" />
+    <Compile Include="Framework\ViewModel\Presenter.cs" />
+    <Compile Include="Framework\ViewModel\ViewModelBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Framework\Extension\Configuration\AppDynamicsAgentConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExtensionMethods\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

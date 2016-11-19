@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension type="Metric" name="AAScriptMonitor" enabled="false">
+  <execution mode="Periodic" type="Script" path="my-script.cmd" />
+  <description>Optional description for the script processing extension.</description>
+  <!-- These metrics and instances will be created as performance counters and instances on windows machine. 
+       The performance category or object for these perf counters will be the extension name given above. we can 
+       confirm and add these counters to config.xml for dotnet agent to collect and report as custom metrics.
+  -->
+  <metrics>
+    <metric name="metric1" enabled="true" description="description of metric1" />
+    <metric name="metric2" enabled="true" description="description of metric2" />
+  </metrics>
+  <instances>
+    <instance name="instance1" enabled="true" />
+    <instance name="instance2" enabled="true" />
+  </instances>
+  <parameters>
+    <!--  
+         Each line of script output must contain metric name, instance name and value. 
+         Uncomment parameter 'LineFormat' to change the format of script line. Default format is 
+         #MetricName# | #InstanceName#, value = #Value#
+         For ex: metric1|instance1, value = 32350
+         Uncomment following line to change default line format. 
+    -->
+    <!--
+    <add key="LineFormat" value="#MetricName# | #InstanceName#, value = #Value#" ></add>
+    -->
+  </parameters>
+</extension>

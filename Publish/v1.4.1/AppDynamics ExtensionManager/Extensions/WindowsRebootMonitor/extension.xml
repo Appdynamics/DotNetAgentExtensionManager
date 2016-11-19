@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension type="Event" name="WindowsRebootMonitor" enabled="false">
+  <execution mode="Continuous" type="dll" path="WindowsRebootMonitor"></execution>
+  <description>This extension reports last windows restart time and reason.</description>
+  <!--Controller Info is required for publishing the events to controller. 
+     Default Account name is customer1 for single tenant controller. other controller details will be picked from
+	 config.xml configured for dotnet agent. -->
+  <controller-info user="UserName" account="customer1" password="Password" />
+  <controller-event-properties>
+    <!--
+    These properties are optional and send to controller as given here in property name value pair. 
+    It can be used to identify the extension machine that sends it.
+    Imp: Node and tier has to match exactly with existing node or tier otherwise it will generate an error.
+    Tier name is mandatory if node name is given. -->
+    <add key="node" value="MyNodeName"></add>
+    <add key="tier" value="MyTier"></add>
+  </controller-event-properties>
+</extension>

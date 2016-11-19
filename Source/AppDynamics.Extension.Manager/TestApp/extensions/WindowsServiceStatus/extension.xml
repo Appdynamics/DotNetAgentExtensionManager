@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<extension type="Metric" name="WinServiceStatus" enabled="false">
+  <execution mode="Periodic" type="DLL" frequency-in-seconds="60"
+             path="WindowsServiceStatusMonitor" />
+  <!--'AppDynamics.ExtensionFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ee431c3073a66117'-->
+  <description>This extension monitors monitor status of windowss service.</description>
+  <metrics>
+    <metric name="ServiceStatus" enabled="true" description="Contains status of ping request in numeric format." />
+    <metric name="UpTimeInSec" enabled="true" description="Contains RoundtripTime took in ping request." />
+  </metrics>
+  <instances>
+    <instance name="AgentService" data="AppDynamics.Agent.Coordinator_service" enabled="true" />
+    <instance name="AppDynamics controller" data="AppDynamicsDomain1" enabled="true" />
+  </instances>
+</extension>

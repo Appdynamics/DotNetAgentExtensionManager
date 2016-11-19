@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension type="Event" name="WindowsEventLogMonitor" enabled="false" xmlns="AppDynamics.DotNetAgent.Extension">
+  <execution mode="Continuous" type="dll" path="WindowsEventLogMonitor"></execution>
+  <description>This extension watch for any new windows event logged for provided event source definition and post them to controller as custom event.</description>
+  <!--Controller Info is required for publishing the events to controller. 
+     Default Account name is customer1 for single tenant controller. other controller details will be picked from
+	 config.xml configured for dotnet agent. -->
+  <controller-info user="anurag" account="anuragtemp" password="welcome" encrypted="false" />
+  <controller-event-properties>
+    <!--These properties are optional and send to controller as given here in property name value pair. 
+    It can be used to identify the extension machine that sends it.
+    Imp: Node, BT and tier has to match exactly otherwise it will generate an error.
+    Tier name is mandatory if node or Bt name is given-->
+    <add key="bt" value="/home"></add>
+    <add key="node" value="WIN-O72JS4R6B2K-Tibco-WebProducer"></add>
+    <add key="tier" value="Tibco-WebProducer"></add>
+    <add key="MahcineName" value="WIN-O72JS4R6B2K"></add>
+  </controller-event-properties>
+  <parameters>
+    <!--These parameters are optional and used to find the event of interest.
+    All values are case-insensitive. Default values are following: 
+    EventLogPath default as System 
+    EventSources default as WAS , multiple values, comma separated
+    EventID default as empty , multiple values, comma separated
+    EventLogEntryType default as Error 
+    EventLogMessageContains default as empty , multiple values, comma separated-->
+    <add key="EventLogPath" value="System"></add>
+    <add key="EventSources" value="IIS-IISReset,WAS"></add>
+    <add key="EventID" value="5011,7036"></add>
+    <add key="EventLogEntryType" value="Information,Warning,Error"></add>
+    <add key="EventLogMessageContains" value="application pool 'webapi-client-1'"></add>
+  </parameters>
+</extension>

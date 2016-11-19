@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension type="Metric" name="WindowsServiceStatusMonitor" enabled="false">
+  <execution mode="Periodic" type="DLL" frequency-in-seconds="60" path="WindowsServiceStatusMonitor" />
+  <description>Optional description for the script processing extension.</description>
+  <metrics>
+    <metric name="ServiceStatus" enabled="true" description="Status of windows service" />
+    <metric name="UpTimeInSec" enabled="true" description="Uptime of windows service" />
+  </metrics>
+  <!-- 
+       We can add any number of services to monitor as instances.
+       Instance name must be equals to the actual service name, which can be found in service properties. 
+  -->
+  <instances>
+    <instance name="WindowsService1" enabled="true" />
+    <instance name="WindowsService2" enabled="true" />
+  </instances>
+</extension>

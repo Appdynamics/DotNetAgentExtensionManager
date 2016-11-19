@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension type="Metric" name="ARMMetricExtension" enabled="true">
+  <execution mode="Periodic" type="DLL" path="AppDynamics.Extension.ARM.ARMMetricExtension" />
+  <description>Optional description for the azure monitoring extension.</description>
+  <!--metrics>
+    <metric name="CpuPercentage" description="CPU Percentage" />
+    <metric name="MemoryPercentage" description="Memory Percentage" />
+    <metric name="DiskQueueLength" description="Disk Queue Length" />
+    <metric name="HttpQueueLength" description="Http Queue Length" />
+    <metric name="BytesReceived" description="Data In" />
+    <metric name="BytesSent" description="Data Out" />
+  </metrics-->
+  <instances>
+    <instance name="AppService4444" data="resourceGroups/BasicPlanResource/providers/Microsoft.Web/sites/AppService4444/providers/Microsoft.insights/" />
+  </instances>
+  <parameters>
+    <add key="CLIENT_ID" value="9afc92b0-2c4e-43e4-a86e-c57e61db2e92" />
+    <add key="TENANT_ID" value="1ab814a9-c3c0-4f74-8b74-3c2495d30ddb" />
+    <add key="CLIENT_KEY" value="8LZRLKxmxW1KdmfyeAxsbGspNZZcqrZUCOnD8RymWfg=" />
+    <add key="SUBSCRIPTION_ID" value="b7ca52ea-acfc-4cc9-925e-f3c9ac2058ef" />
+  </parameters>
+</extension>

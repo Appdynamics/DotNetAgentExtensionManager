@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension type="Metric" name="DirectoryWatcher" enabled="false">
+  <execution mode="Periodic" type="DLL" frequency-in-seconds="60" path="WindowsDirectoryWatcher" />
+  <description>File count monitor extension reports number of files, sub directories and last access time for given directories.</description>
+  <metrics>
+    <metric name="FileCount" description="Number of files" />
+    <metric name="DirectoryCount" description="Number of directories" />
+    <metric name="LastAccessTime" description="Last time the dir is accessed." />
+    <metric name="LastWriteTime" description="Last time the dir is written into." />
+  </metrics>
+  <!--
+    We can add multiple directories to watch as instances. For all instances or directories above mentioned 
+    metrics will be reported. 
+    The directory needs to be physically present on the machine and accessible. 
+  -->
+  <instances>
+    <instance name="DotNetAgentLogDir" data="C:\ProgramData\AppDynamics\DotNetAgent\Logs" />
+    <instance name="cdrive" data="C:\" />
+  </instances>
+</extension>

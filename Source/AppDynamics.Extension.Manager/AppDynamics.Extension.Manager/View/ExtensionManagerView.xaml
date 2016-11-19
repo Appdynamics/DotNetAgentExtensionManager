@@ -1,0 +1,149 @@
+﻿<Window x:Class="AppDynamics.Extension.Manager.View.ExtensionManagerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:AppDynamics.Extension.Manager.View"
+        Title="AppDynamics Extension Manager" 
+        BorderBrush="Gray" BorderThickness="2"
+        WindowStartupLocation="CenterScreen" Width="650" MaxWidth="650" Height="700" MinHeight="450" MinWidth="650" >
+    <Window.Resources>
+        <ResourceDictionary Source="Resources.xaml" />
+    </Window.Resources>
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate x:Key="ExtensionCellTemplate" >
+                <Border Background="Transparent" BorderBrush="Black" Margin="5" Padding="5" BorderThickness="1">
+                    <Grid HorizontalAlignment="Stretch" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" MinWidth="100"/>
+                            <ColumnDefinition Width="60" MinWidth="60"/>
+                            <ColumnDefinition Width="100" MinWidth="100"/>
+                            <ColumnDefinition Width="*" MinWidth="100"/>
+                            <ColumnDefinition Width="*" MinWidth="120"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="Extension Type:" HorizontalAlignment="Left" FontWeight="SemiBold" />
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding Path = Extension.Type}" HorizontalAlignment="Left" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Text="Execution Type:" HorizontalAlignment="Left" FontWeight="SemiBold" />
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding Path = Extension.ExecutionType}" HorizontalAlignment="Left" />
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="2"
+                                   Text="Execution Mode:" HorizontalAlignment="Left" FontWeight="SemiBold" />
+                        <TextBlock Grid.Row="1" Grid.Column="3"
+                                   Text="{Binding Path =Extension.ExecutionMode}" HorizontalAlignment="Left" />
+
+                        <TextBlock Grid.Row="0" Grid.Column="2"
+                                   Text="Extension Name:" HorizontalAlignment="Left" FontWeight="SemiBold" />
+                        <TextBlock Grid.Row="0" Grid.Column="3"
+                                   Text="{Binding Path=Extension.ExtensionName, FallbackValue='Name'}" HorizontalAlignment="Left" />
+
+                        <TextBlock Grid.Row="0" Grid.Column="4" 
+                                   Text="{Binding Path=Extension.Enabled, FallbackValue='Disabled', StringFormat='Enabled: {0}'}" FontWeight="SemiBold" HorizontalAlignment="Right" />
+                        
+                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" TextWrapping="Wrap" 
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto" Width="450"
+                                   Text="{Binding Path=Extension.Description, FallbackValue='Description'}" HorizontalAlignment="Left" />
+
+                        <Button Grid.Row="1" Grid.Column="4" Width="60" Height="25" HorizontalAlignment="Right"
+                                Content="Manage" Style="{StaticResource ButtonStyle}" Margin="5"
+                                Command="{Binding Path=DataContext.ShowExtensionDetail, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" CommandParameter="{Binding}"
+                                ></Button>
+
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="GridRowHeader" Height="60" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60" />
+            <RowDefinition x:Name="GridRowBody" Height="*" />
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" MinWidth="200"/>
+            <ColumnDefinition Width="*" MinWidth="300"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.ColumnSpan="2" Grid.RowSpan="2" Style="{StaticResource MainBorderStyle}" />
+        
+        <Border Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" Style="{StaticResource MainBorderStyle}" />
+
+        <TextBlock Text="{Binding Path=UIDetails.HeadingExtensionService, FallbackValue='ExtensionService'}" 
+                   Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Style="{StaticResource TextBlockHeading}"/>
+        <TextBlock Text="{Binding Path=ServiceStatus, FallbackValue='Not Installed'}" 
+                   Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" 
+                   Style="{StaticResource TextBlockValueServiceStatus}" />
+
+        <TextBlock Text="{Binding Path=UIDetails.HeadingExtensionList, FallbackValue='List of extensions loaded'}" 
+                   Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                   Style="{StaticResource TextBlockHeading}"/>
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" >
+
+            <Button Command="{Binding Path=AddnewExtension}" Visibility="Hidden"
+                   Style="{StaticResource AddImageButtonStyle}">
+            </Button>
+
+            <Button Command="{Binding Path=RefreshLoadedExtension}" Visibility="Hidden"
+                   Style="{StaticResource ReloadImageButtonStyle}">
+            </Button>
+        </StackPanel>
+        <StackPanel  x:Name="stackHeader" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+            
+            <Button Content="{Binding Path=ButtonStartText, FallbackValue='Start'}" 
+                    Command="{Binding Path=StartStop}" Visibility="{Binding Path=ButtonStartVisibility}"
+                    Style="{StaticResource ButtonStyle}"/>
+
+            <Button Content="{Binding Path=ButtonInstallText, FallbackValue='Install'}" 
+                    Command="{Binding Path=Install}"
+                    Style="{StaticResource ButtonStyle}" />
+
+            <Button Content="Restart" 
+                    Command="{Binding Path=Refresh}" 
+                    Style="{StaticResource ButtonStyle}"/>
+
+        </StackPanel>
+
+        <StackPanel  x:Name="stackFooter" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+
+            <Button Content="{Binding Path=UIDetails.ButtonTextOpenCCT, FallbackValue=' Configure Windows Performance Counters '}" 
+                    Command="{Binding Path=ConfigurePerfCounters}" 
+                    Style="{StaticResource ButtonStyle}"/>
+
+            <Button Content="{Binding Path=UIDetails.ButtonTextRestartCoordinator, FallbackValue='Apply Changes'}" 
+                    Command="{Binding Path=ApplyChanges}" 
+                    Style="{StaticResource ButtonStyle}"/>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding ListExtensions}" AutoGenerateColumns="False" x:Name="DGExtensions"
+                  SelectedItem="{Binding Path=SelectedExtension}" 
+                  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ExtensionDataGridStyle}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Publish Date" CellTemplate="{StaticResource ExtensionCellTemplate}" CellStyle="{StaticResource ExtensionDataGridCellStyle}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <controls:MessageDialog Visibility="{Binding Path=MessageBoxDialogue.Visibility, FallbackValue=Hidden}" 
+                                Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="2" Height="200" Width="300"
+                                ></controls:MessageDialog>
+
+        <controls:ExtensionDetailView Visibility="{Binding Path=ExtensionDetail.Visibility, FallbackValue=Hidden}" 
+                                Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="2"
+                                ></controls:ExtensionDetailView>
+
+        <controls:CreateExtensionControl Visibility="{Binding Path=NewExtension.Visibility, FallbackValue=Hidden}" 
+                                Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="2"
+                                ></controls:CreateExtensionControl>
+    </Grid>
+
+</Window>

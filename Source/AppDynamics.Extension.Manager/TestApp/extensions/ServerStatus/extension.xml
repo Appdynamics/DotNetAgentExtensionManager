@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<extension type="Metric" name="ServerStatus" enabled="false">
+  <execution mode="Periodic" type="DLL" frequency-in-seconds="60" 
+             path="AppDynamics.Extension.ServerStatus" />
+  <!--'AppDynamics.ExtensionFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ee431c3073a66117'-->
+  <description>This extension monitors monitor status based on a ping request.</description>
+  <metrics>
+    <metric name="Status" enabled="true" description="Contains status of ping request in numeric format." />
+    <metric name="RoundtripTime" enabled="true" description="Contains RoundtripTime took in ping request." />
+  </metrics>
+  <instances>
+    <instance name="localhost" data="localhost" enabled="true" />
+    <instance name="www.google.com" data="www.google.com" enabled="true" />
+    <instance name="192.168.32.134" data="10.10.0.1" enabled="true" />
+  </instances>
+  <parameters>
+    <add key="TimeOutInMS" value="120" />
+  </parameters>
+</extension>

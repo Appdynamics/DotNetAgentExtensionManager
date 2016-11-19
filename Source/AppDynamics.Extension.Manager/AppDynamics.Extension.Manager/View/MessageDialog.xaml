@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="AppDynamics.Extension.Manager.View.MessageDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="Resources.xaml" />
+    </UserControl.Resources>
+
+    <Grid UseLayoutRounding="True" ShowGridLines="False" Margin="0" IsManipulationEnabled="False" >
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="GridRowCounters1" MinHeight="50" MaxHeight="60"/>
+            <RowDefinition x:Name="GridRowCounters" Height="*" />
+            <RowDefinition x:Name="GridRowFooter1" Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="GridColCounters" Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Style="{StaticResource BorderStyleMessageBox}" Grid.Row="0" Grid.RowSpan="3" ></Border>
+
+        <Image Grid.Row="0" Grid.Column="0" 
+               Style="{StaticResource ImageHeadingMessageBox}"
+                Source="images/info.png" Visibility="{Binding Path=MessageBoxDialogue.InfoVisibility, FallbackValue='Visible'}"  />
+        <Image  Grid.Row="0" Grid.Column="0" 
+               Style="{StaticResource ImageHeadingMessageBox}"
+                Source="images/warn-img32.png" Visibility="{Binding Path=MessageBoxDialogue.ErrorVisibility, FallbackValue='Hidden'}"  />
+
+        <TextBlock Text="{Binding Path=MessageBoxDialogue.ErrorMessage}" Grid.Row="0" 
+                   Style="{StaticResource TextBlockHeadingMessageBox}"></TextBlock>
+        <ScrollViewer Grid.Row="1" Margin="0 2 10 2" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <TextBlock Text="{Binding Path=MessageBoxDialogue.ErrorMessageDetail}" Grid.Row="1"
+                   Style="{StaticResource TextBlockMessageBox}"></TextBlock>
+        </ScrollViewer>
+        <Button Content="Close" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Style="{StaticResource ButtonStyleMessageBox}"
+                IsDefault="True" Command="{Binding Path=HideMessageBox}" Grid.Row="2" />
+    </Grid>
+</UserControl>

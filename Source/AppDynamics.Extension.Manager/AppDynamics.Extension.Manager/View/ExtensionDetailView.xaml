@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="AppDynamics.Extension.Manager.View.ExtensionDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="Resources.xaml" />
+    </UserControl.Resources>
+
+    <Grid HorizontalAlignment="Stretch" UseLayoutRounding="True" ShowGridLines="False" Margin="0" IsManipulationEnabled="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" MinWidth="200"/>
+            <ColumnDefinition Width="*" MinWidth="250"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.RowSpan="4" Grid.ColumnSpan="2"  Style="{StaticResource BorderStyleExtensionDetail}"  ></Border>
+
+        <TextBlock Text="{Binding Path=ExtensionDetail.Extension.ExtensionName, FallbackValue='extension name'}" FontWeight="SemiBold"
+                HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="15" 
+                Grid.Row="0" Grid.ColumnSpan="2" IsEnabled="False" IsManipulationEnabled="False"/>
+
+        <CheckBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 20 20 0" 
+                  IsChecked="True" IsEnabled="False"  Content="Load XML View"></CheckBox>
+        
+        <TextBox Grid.Row="2" Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10"
+                 TextWrapping="Wrap" FontSize="13" AcceptsReturn="True" AcceptsTab="True" IsManipulationEnabled="True"
+                 IsUndoEnabled="True"
+            Text="{Binding Path=ExtensionDetail.ExtensionXML, FallbackValue='Could not load extension xml.'}" ></TextBox>
+        
+        <TextBlock Text="{Binding Path=ExtensionDetail.Message, FallbackValue='error message'}" 
+                   Grid.Row="1" Grid.ColumnSpan="2" Margin="15 0" TextWrapping="WrapWithOverflow" Foreground="#A22"
+                    ></TextBlock>
+        
+        <StackPanel  x:Name="stackFooter" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+
+            <Button Content="Ignore Changes" 
+                Style="{StaticResource ButtonStyle}"
+                Command="{Binding Path=ExtensionDetail.IgnoreChanges}" />
+            
+            <Button Content="Validate XML" 
+                    Command="{Binding Path=ExtensionDetail.ValidateExtensionXML}" 
+                    Style="{StaticResource ButtonStyle}"/>
+
+            <Button Content="Save" 
+                    Command="{Binding Path=ExtensionDetail.UpdateExtensionXML}" 
+                    Style="{StaticResource ButtonStyle}" />
+
+            <Button Content="Close" 
+                Style="{StaticResource ButtonStyle}"
+                IsDefault="True" Command="{Binding Path=HideExtensionDetail}" />
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>
