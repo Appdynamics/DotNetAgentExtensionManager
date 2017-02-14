@@ -8,10 +8,6 @@ namespace AppDynamics.Extension.CCT.Infrastructure
     class ResourceStrings
     {
         internal const string PerfCounterXmlTemplate = "<perf-counter cat=\"{0}\" name=\"{1}\" instance=\"{2}\"/>";
-        internal const string DotNetAgentRegistryKey = @"SOFTWARE\AppDynamics\dotNet Agent";
-        internal const string InstallationDirRegistryName = "InstallationDir";
-        internal const string ConfigFileLocation = @"\AppDynamics\DotNetAgent\config\";
-        internal const string ConfigFileName = "config.xml";
 
         internal const string PerfCounterRootName = "perf-counters";
         internal const string PerfCounterElementName = "perf-counter";

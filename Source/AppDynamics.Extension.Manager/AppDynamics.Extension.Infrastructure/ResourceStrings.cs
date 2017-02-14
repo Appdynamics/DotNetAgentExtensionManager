@@ -10,7 +10,10 @@ namespace AppDynamics.Infrastructure
 
         internal const string DotNetAgentRegistryKey = @"SOFTWARE\AppDynamics\dotNet Agent";
         internal const string InstallationDirRegistryName = "InstallationDir";
-        internal const string ConfigFileLocation = @"\AppDynamics\DotNetAgent\config\";
+        internal const string DotNetAgentFolderRegistryName = "DotNetAgentFolder";
+
+        internal const string DotNetAgentFolderLocation = @"AppDynamics\DotNetAgent";
+        internal const string ConfigFileFolder = "config";
         internal const string ConfigFileName = "config.xml";
 
         internal const string ExtensionServiceEXEName = "ExtensionService.exe";
@@ -23,14 +26,27 @@ namespace AppDynamics.Infrastructure
         public static string StartStr { get { return "Start"; } }
         public static string StopStr { get { return "Stop"; } }
 
+        /// <summary>
+        /// Contains full path to config.xml file. Supports custom locations.
+        /// </summary>
         public static string AgentConfigFullPath
         {
             get
             {
                 //TODO: Need to update to get correct file if config location is changed.
-                return Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) +
-                                 ResourceStrings.ConfigFileLocation +
-                                 ResourceStrings.ConfigFileName;
+
+                string defaultPath= 
+                    Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) +
+                    System.IO.Path.DirectorySeparatorChar +
+                    ResourceStrings.DotNetAgentFolderLocation;
+
+                string path = AppDynamics.Infrastructure.Helper.RegistryHelper.
+                    GetorDefault(DotNetAgentRegistryKey, DotNetAgentFolderRegistryName, defaultPath);
+
+                return path +
+                    ResourceStrings.ConfigFileFolder +
+                    System.IO.Path.DirectorySeparatorChar +
+                    ResourceStrings.ConfigFileName;
             }
         }
 

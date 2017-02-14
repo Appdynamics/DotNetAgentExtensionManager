@@ -80,6 +80,7 @@
     <Compile Include="Helper\ControllerEventHelper.cs" />
     <Compile Include="Helper\EnumToStringConverter.cs" />
     <Compile Include="Helper\FileHelper.cs" />
+    <Compile Include="Helper\RegistryHelper.cs" />
     <Compile Include="Helper\ServiceHelper.cs" />
     <Compile Include="Framework\Extension\Handlers\ExtensionXMLHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

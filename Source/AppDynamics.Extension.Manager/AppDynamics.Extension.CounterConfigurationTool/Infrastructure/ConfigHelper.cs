@@ -83,11 +83,11 @@ namespace AppDynamics.Extension.CCT.Infrastructure
         {
             isConfigFileLocated = true;
 
-            string programDataLocation = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            string configFilePath = AppDynamics.Infrastructure.ResourceStrings.AgentConfigFullPath;
 
-            if (File.Exists(programDataLocation + ResourceStrings.ConfigFileLocation + ResourceStrings.ConfigFileName))
+            if (File.Exists(configFilePath))
             {
-                return programDataLocation + ResourceStrings.ConfigFileLocation + ResourceStrings.ConfigFileName;
+                return configFilePath;
             }
             else
             {
