@@ -172,8 +172,6 @@ namespace AppDynamics.Extension.Manager.ViewModel
             }
         }
 
-
-
         #endregion
 
         #region command and methods

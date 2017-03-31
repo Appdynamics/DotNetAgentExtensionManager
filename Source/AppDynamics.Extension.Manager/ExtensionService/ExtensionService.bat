@@ -32,6 +32,15 @@ IF "%1" == "restart-coordinator" (
 IF "%1" == "uninstall" (
     GOTO uninstallExtensionService
 )
+IF "%1" == "encrypt" (
+ECHO going to encrypting
+IF "%2" == "" (
+	ECHO Please provide data to encrypt in following format- 
+	ECHO ExtensionService.bat encrypt MyP@ssw0rd
+	GOTO END
+)
+	GOTO encrypt
+)
 
 GOTO badOption
 
@@ -45,8 +54,10 @@ ECHO 	2- stop
 ECHO 	3- restart 
 ECHO 	4- install 
 ECHO 	5- uninstall
+ECHO 	6- encrypt <data-to-encrypt>
 ECHO Usage:
 ECHO ExtensionService.bat start
+ECHO ExtensionService.bat encrypt MyP@ssw0rd
 GOTO END
 
 :installExtensionService
@@ -87,7 +98,15 @@ GOTO END
 CALL :stopExtensionService
 SC DELETE %SERVICE_NAME%
 ECHO AppDynamics Extension service uninstalled successfully.
+
 if %ERRORLEVEL% NEQ 0 ECHO Unable to uninstall extension Service
+GOTO END
+
+:encrypt
+
+%EXTENSION_EXE_PATH% -%1 %2
+if %ERRORLEVEL% NEQ 0 ECHO Unable to encrypt. 
+
 GOTO END
 
 :END

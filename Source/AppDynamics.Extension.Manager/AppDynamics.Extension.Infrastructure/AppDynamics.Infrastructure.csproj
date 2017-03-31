@@ -58,6 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Extensions\EmptyExtension.cs" />
     <Compile Include="Extensions\PerformanceCounterExtension.cs" />
     <Compile Include="Extensions\WindowsServiceStatusMonitor.cs" />
@@ -74,9 +77,13 @@
     </Compile>
     <Compile Include="Framework\Extension\Handlers\ConfigXMLHandler.cs" />
     <Compile Include="Framework\Extension\Model\PerformanceCounterDetail.cs" />
+    <Compile Include="Framework\Extension\Providers\BasicCryptoProvider.cs" />
+    <Compile Include="Framework\Extension\Providers\CommandListner.cs" />
+    <Compile Include="Framework\Extension\Providers\RijndaelCryptoProvider.cs" />
     <Compile Include="Framework\Extension\Providers\ControllerRestApiProvider.cs" />
     <Compile Include="Framework\Extension\Handlers\PerformanceCounterHandler.cs" />
     <Compile Include="Framework\Extension\Providers\IDataProvider.cs" />
+    <Compile Include="Framework\Extension\Providers\ICryptoProvider.cs" />
     <Compile Include="Helper\ControllerEventHelper.cs" />
     <Compile Include="Helper\EnumToStringConverter.cs" />
     <Compile Include="Helper\FileHelper.cs" />

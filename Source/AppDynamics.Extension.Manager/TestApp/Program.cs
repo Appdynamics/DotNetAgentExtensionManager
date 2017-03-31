@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -16,7 +17,7 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-
+            testEncryption();
 
             ExtensionLoader exeLoader = new ExtensionLoader();
 
@@ -35,6 +36,33 @@ namespace TestApp
             Console.ReadLine();
 
         }
+
+        static void testEncryption()
+        {
+            string pwd = Console.ReadLine();
+            
+            var cp = new AppDynamics.Infrastructure.Framework.Extension.Providers.BasicCryptoProvider();
+
+            string encrypted = cp.EncryptString(pwd);
+            Console.WriteLine("Basic->"+encrypted);
+
+            var cp1 = new AppDynamics.Infrastructure.Framework.Extension.Providers.BasicCryptoProvider();
+            Console.WriteLine(cp1.DecryptString(encrypted));
+
+
+            var cp3 = new AppDynamics.Infrastructure.Framework.Extension.Providers.RijndaelCryptoProvider();
+
+            string encrypted1 = cp3.EncryptString(pwd);
+            Console.WriteLine("++++++++++++++++++++++++++");
+            Console.WriteLine("Rijindale->" + encrypted1);
+
+            var cp4 = new AppDynamics.Infrastructure.Framework.Extension.Providers.RijndaelCryptoProvider();
+            Console.WriteLine(cp4.DecryptString(encrypted1));
+
+
+            Console.Read();
+        }
+
 
         static void Main1(string[] args)
         {

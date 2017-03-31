@@ -38,7 +38,8 @@ namespace AppDynamics.Infrastructure
                 string defaultPath= 
                     Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) +
                     System.IO.Path.DirectorySeparatorChar +
-                    ResourceStrings.DotNetAgentFolderLocation;
+                    ResourceStrings.DotNetAgentFolderLocation +
+                    System.IO.Path.DirectorySeparatorChar;
 
                 string path = AppDynamics.Infrastructure.Helper.RegistryHelper.
                     GetorDefault(DotNetAgentRegistryKey, DotNetAgentFolderRegistryName, defaultPath);
@@ -135,6 +136,13 @@ namespace AppDynamics.Infrastructure
         public static string PerfCounterXmlTemplate { get { return "<perf-counter cat=\"{0}\" name=\"{1}\" instance=\"{2}\"/>"; } }
 
 
-        public static string CurrentVersion { get { return "1.4.1.0"; } }
+        public static string CurrentVersion
+        {
+            get
+            {
+                return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            }
+        }
+
     }
 }

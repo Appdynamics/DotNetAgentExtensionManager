@@ -14,6 +14,8 @@ namespace AppDynamics.Extension.CCT.Infrastructure
             
         }
 
+        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static string WorkStatus = "";
 
         public static int LoadedCategories = 0;
@@ -31,7 +33,9 @@ namespace AppDynamics.Extension.CCT.Infrastructure
                 ListPerfCategories = new List<CategoryDetails>();
 
                 WorkStatus = ResourceStrings.StatusLoading;
-                
+
+                _logger.Trace("Loading perf counter categories.");
+
                 foreach (PerformanceCounterCategory cat in arrayCategory)
                 {
                     try

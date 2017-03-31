@@ -1,6 +1,7 @@
 ﻿using AppDynamics.Extension.CCT.Model;
 using Microsoft.Win32;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,21 +11,28 @@ using System.Xml.Linq;
 
 namespace AppDynamics.Extension.CCT.Infrastructure
 {
-    public static class ConfigHelper
+    public class ConfigHelper
     {
-        static ConfigHelper()
+        
+        /// IMP: Removing static constructor and adding initialize method
+        
+
+        public void Initialize()
         {
             // Verify if config.xml is present
-            ConfigFilelocation = GetConfigFileLocation();
+            GetConfigFileLocation();
         }
 
-        public static bool isConfigFileLocated { get; private set; }
+        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static string ConfigFilelocation { get; private set; }
 
-        public static string LastException { get; private set; }
+        public bool isConfigFileLocated { get; private set; }
 
-        public static List<PerformanceCounterDetail> ReadAppDynamicsConfigFile()
+        public string ConfigFilelocation { get; private set; }
+
+        public string LastException { get; private set; }
+
+        public List<PerformanceCounterDetail> ReadAppDynamicsConfigFile()
         {
             XElement xmlData = null;
 
@@ -37,6 +45,10 @@ namespace AppDynamics.Extension.CCT.Infrastructure
                     XElement perfCounters = GetChildElementbyName(xMachineAgent, "perf-counters");
                     xmlData = perfCounters;
                 }
+            }
+            else
+            {
+                _logger.Info("Could not locate Config file location at-" + ConfigFilelocation);
             }
 
             List<PerformanceCounterDetail> counters = GetConterConfigViewFromXElement(xmlData);
@@ -79,24 +91,29 @@ namespace AppDynamics.Extension.CCT.Infrastructure
             return machineAgent;
         }
 
-        private static string GetConfigFileLocation()
+        private void GetConfigFileLocation()
         {
             isConfigFileLocated = true;
 
-            string configFilePath = AppDynamics.Infrastructure.ResourceStrings.AgentConfigFullPath;
-
-            if (File.Exists(configFilePath))
+            ConfigFilelocation = "";
+            // HACK for #86008 
+            if (String.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["ConfigFilePath"]))
             {
-                return configFilePath;
+                ConfigFilelocation = ConfigurationManager.AppSettings["ConfigFilePath"].Trim();
+                _logger.Trace("checking app.config for Config File Path @" + ConfigFilelocation);
             }
             else
             {
-                isConfigFileLocated = false;
-                return "";
+                ConfigFilelocation = AppDynamics.Infrastructure.ResourceStrings.AgentConfigFullPath;
             }
+
+            isConfigFileLocated = File.Exists(ConfigFilelocation);
+
+            _logger.Info(String.Format("Located-{0} Config file at - {1}", isConfigFileLocated, ConfigFilelocation));
+
         }
 
-        private static bool AddPerformanceCounterstoConfig(XElement xmlCounters)
+        private bool AddPerformanceCounterstoConfig(XElement xmlCounters)
         {
             bool success = false;
 
@@ -129,13 +146,14 @@ namespace AppDynamics.Extension.CCT.Infrastructure
                     {
                         success = false;
                         LastException = ex.Message;
+                        _logger.Error(ex, "Error while adding perf counters");
                     }
                 }
             }
             return success;
         }
 
-        public static bool AddPerformanceCounterstoConfig(List<PerformanceCounterDetail> listXMLCountersInConfig)
+        public bool AddPerformanceCounterstoConfig(List<PerformanceCounterDetail> listXMLCountersInConfig)
         {
             bool result = false;
 

@@ -23,6 +23,9 @@ namespace AppDynamics.Extension.CCT.ViewModel
             UIDetails = new UIProperties();
             ConfigFileLocation = ResourceStrings.DefaultConfigFileText;
 
+            cHelper = new ConfigHelper();
+            cHelper.Initialize();
+
             PrepareBackGroundWorker();
 
             InitializeAsynchronously();
@@ -174,6 +177,8 @@ namespace AppDynamics.Extension.CCT.ViewModel
         //TODO: Hack to avoid hang in 2003 server while reload.
         private bool _is2003Reload = false;
 
+        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         #endregion
 
         #region Async operations
@@ -191,6 +196,8 @@ namespace AppDynamics.Extension.CCT.ViewModel
 
             backGroundWorker.ProgressChanged += backGroundWorker_Progress;
         }
+
+        ConfigHelper cHelper = null;
 
         private void InitializeAsynchronously()
         {
@@ -242,7 +249,7 @@ namespace AppDynamics.Extension.CCT.ViewModel
                 }
                 else
                 {
-                    DisplayMessage("Can not load Performance categories", ConfigHelper.LastException, true);
+                    DisplayMessage("Can not load Performance categories", cHelper.LastException, true);
                 }
                 
             }
@@ -319,11 +326,12 @@ namespace AppDynamics.Extension.CCT.ViewModel
 
         private void VerifyAndReadConfig(object state)
         {
-            if (ConfigHelper.isConfigFileLocated)
-            {
-                _listConfigCounter = ConfigHelper.ReadAppDynamicsConfigFile();
 
-                ConfigFileLocation = ConfigHelper.ConfigFilelocation;
+            if (cHelper.isConfigFileLocated)
+            {
+                _listConfigCounter = cHelper.ReadAppDynamicsConfigFile();
+
+                ConfigFileLocation = cHelper.ConfigFilelocation;
             }
             else
             {
@@ -418,9 +426,9 @@ namespace AppDynamics.Extension.CCT.ViewModel
 
         public void SaveCountersInConfig()
         {
-            if (ConfigHelper.isConfigFileLocated)
+            if (cHelper.isConfigFileLocated)
             {
-                bool isSaved = ConfigHelper.AddPerformanceCounterstoConfig(_listConfigCounter);
+                bool isSaved = cHelper.AddPerformanceCounterstoConfig(_listConfigCounter);
 
                 if (isSaved)
                 {
@@ -430,7 +438,7 @@ namespace AppDynamics.Extension.CCT.ViewModel
                 }
                 else
                 {
-                    string error = ConfigHelper.LastException;
+                    string error = cHelper.LastException;
 
                     CopyXMLToClipBoard();
 

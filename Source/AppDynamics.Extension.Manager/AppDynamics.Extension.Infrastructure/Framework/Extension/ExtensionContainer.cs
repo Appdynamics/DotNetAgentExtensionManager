@@ -158,6 +158,28 @@ namespace AppDynamics.Infrastructure.Framework.Extension
                     _logger.Debug(String.Format("Loading Agent configuration for {0}", _extension.ExtensionName));
 
                 _agentConfig = AgentConfig.LoadAgentConfiguration();
+
+                if (_extension.ControllerInfo.Encrypted)
+                {
+                    ICryptoProvider cryptoObj = null;
+
+                    #region Tiny CryptoProvider factory
+
+                    if ("false".Equals(System.Configuration.ConfigurationManager.AppSettings["BasicEncryption"],
+                        StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        cryptoObj = new RijndaelCryptoProvider();
+                    }
+                    else
+                    {
+                        cryptoObj = new BasicCryptoProvider();
+                    }
+                    #endregion
+
+                    _extension.ControllerInfo.Password =
+                        cryptoObj.DecryptString(_extension.ControllerInfo.Password);
+
+                }
             }
 
             switch (_extension.Type)
