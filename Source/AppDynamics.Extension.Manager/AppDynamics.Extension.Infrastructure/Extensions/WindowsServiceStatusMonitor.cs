@@ -52,7 +52,7 @@ namespace AppDynamics.Infrastructure.Extensions
 
                     einstance.ListExtensionMetrics.
                     Find(m => m.MetricName.Equals
-                        (metricNameServiceUpTimeInMin, StringComparison.CurrentCultureIgnoreCase)).Value = status;
+                        (metricNameServiceUpTimeInMin, StringComparison.CurrentCultureIgnoreCase)).Value = uptime;
 
                 }
                 result = true;
