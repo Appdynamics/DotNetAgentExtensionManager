@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TestApp</RootNamespace>
     <AssemblyName>TestApp</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AppDynamics.Extension.SDK">
@@ -57,9 +60,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="extensions\ScriptExtension\my-script.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="extensions\ScriptExtension\my-script.cmd" />
     <None Include="NLog.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -73,32 +74,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="extensions\ARM\AppDynamics.Extension.ARM.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="extensions\ARM\extension.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="extensions\DirectoryWatcher\extension.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="extensions\ARM\AppDynamics.Extension.ARM.dll" />
+    <Content Include="extensions\ARM\extension.xml" />
+    <Content Include="extensions\DirectoryWatcher\extension.xml" />
     <Content Include="extensions\DirectoryWatcher\FileCountMonitor.dll" />
-    <Content Include="extensions\DirectoryWatcher\WindowsDirectoryWatcher.dll">
+    <Content Include="extensions\DirectoryWatcher\WindowsDirectoryWatcher.dll" />
+    <Content Include="extensions\IISMonitor\extension.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
-    <Content Include="extensions\ScriptExtension\extension.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="extensions\ServerStatus\AppDynamics.Extension.ServerStatus.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="extensions\ScriptExtension\extension.xml" />
+    <Content Include="extensions\ServerStatus\AppDynamics.Extension.ServerStatus.dll" />
     <Content Include="extensions\ServerStatus\AppDynamics.Extension.ServerStatus.pdb" />
-    <Content Include="extensions\ServerStatus\extension.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="extensions\WindowsServiceStatus\extension.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="extensions\ServerStatus\extension.xml" />
+    <Content Include="extensions\WindowsServiceStatus\extension.xml" />
     <Content Include="Newtonsoft.Json.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

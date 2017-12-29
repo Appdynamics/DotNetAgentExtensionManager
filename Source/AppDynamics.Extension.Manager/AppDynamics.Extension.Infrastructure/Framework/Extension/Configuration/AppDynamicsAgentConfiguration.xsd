@@ -31,8 +31,8 @@
       </xs:element>
       <xs:element name="account" minOccurs="0">
         <xs:complexType>
-          <xs:attribute name="name" type="xs:string" use="required"/>
-          <xs:attribute name="password" type="xs:string" use="required"/>
+          <xs:attribute name="name" type="xs:string"/>
+          <xs:attribute name="password" type="xs:string"/>
         </xs:complexType>
       </xs:element>
       <xs:element  name="proxy" minOccurs="0">
@@ -41,12 +41,12 @@
             <xs:element name="authentication" minOccurs="0">
               <xs:complexType>
                 <xs:attribute name="enabled" type="xs:boolean" default="false"/>
-                <xs:attribute name="user_name" type="xs:string" use="required"/>
+                <xs:attribute name="user_name" type="xs:string"/>
                 <xs:attribute name="password" type="xs:string"/>
                 <xs:attribute name="domain" type="xs:string"/>
               </xs:complexType>
             </xs:element>
-           </xs:all>
+          </xs:all>
           <xs:attribute name="host" type="xs:string" use="required"/>
           <xs:attribute name="port" type="xs:int" use="required"/>
           <xs:attribute name="enabled" type="xs:boolean" default="true"/>
@@ -57,6 +57,12 @@
     <xs:attribute name="port" type="xs:int"/>
     <xs:attribute name="ssl" type="xs:boolean"/>
     <xs:attribute name="high_availability" type="xs:boolean"/>
+    <xs:attribute name="enable_tls12" type="xs:boolean"/>
+    <xs:attribute name="secure" type="xs:boolean"/>
+    <xs:attribute name="enable_config_deployment" type="xs:boolean" default="true" />
+    <xs:attribute name="configuration_mode_deployer" type="xs:boolean" default="false" />
+    <xs:attribute name="force_http_web_request" type="xs:boolean" />
+    <xs:attribute name="skip_sysprops" type="xs:boolean" />
   </xs:complexType>
 
   <xs:complexType name="MachineAgentType">
@@ -78,7 +84,7 @@
               <xs:complexType>
                 <xs:attribute name="name" type="xs:string" use="required"/>
                 <xs:attribute name="enabled" type="xs:boolean" use="required"/>
-                <xs:attribute name ="args" type="xs:string"/>
+                <xs:attribute name="args" type="xs:string"/>
               </xs:complexType>
             </xs:element>
           </xs:sequence>
@@ -97,6 +103,7 @@
           </xs:sequence>
           <xs:attribute name="cache-timeout-in-secs" type="xs:int"/>
           <xs:attribute name="update-interval-in-secs" type="xs:int"/>
+          <xs:attribute name="enabled" type="xs:boolean"/>
         </xs:complexType>
       </xs:element>
       <xs:element name="assembly-black-list" minOccurs="0">
@@ -118,10 +125,40 @@
           <xs:attribute name="max-percent-cpu" type="xs:int"/>
           <xs:attribute name="max-percent-memory" type="xs:int"/>
           <xs:attribute name="max-queue-item-age" type="xs:int"/>
-          <xs:attribute name="periodic-collection" type="xs:int"/>            
+          <xs:attribute name="periodic-collection" type="xs:int"/>
         </xs:complexType>
       </xs:element>
       <xs:element name="clrcrash-reporting" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="process-monitor" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="report-all-iis-processes" type="xs:boolean"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="metrics" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="perf-metrics" minOccurs="0" maxOccurs="1">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="perf-metric" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:attribute name="name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <!-- 0 for none, 1 for high, 2 for medium and 3 for low(all)-->
+                <xs:attribute name="priority-level" type="xs:int" default="3"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="max-metrics" type="xs:int"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="namedpipe-overlapped" minOccurs="0">
         <xs:complexType>
           <xs:attribute name="enabled" type="xs:boolean" default="true"/>
         </xs:complexType>
@@ -149,6 +186,7 @@
                     <xs:sequence>
                       <xs:element name="profiler" type="ProfilerType" minOccurs="0" maxOccurs="1"/>
                     </xs:sequence>
+                    <xs:attribute name="iis-application-name-enabled" type="xs:boolean" use="optional" default="false" />
                   </xs:extension>
                 </xs:complexContent>
               </xs:complexType>
@@ -162,6 +200,7 @@
                         <xs:extension base="AppAgentType">
                           <xs:attribute name="name" type="xs:string" use="required"/>
                           <xs:attribute name="app-domain-name" type="xs:string"/>
+                          <xs:attribute name="iis-application-name-enabled" type="xs:boolean" use="optional" default="false" />
                         </xs:extension>
                       </xs:complexContent>
                     </xs:complexType>
@@ -180,6 +219,8 @@
                           <xs:attribute name="site" type="xs:string" use="required"/>
                           <xs:attribute name="port" type="xs:integer"/>
                           <xs:attribute name="app-domain-name" type="xs:string"/>
+                          <xs:attribute name="site-regex" type="xs:boolean" default="false"/>
+                          <xs:attribute name="iis-application-name-enabled" type="xs:boolean" use="optional" default="false" />
                         </xs:extension>
                       </xs:complexContent>
                     </xs:complexType>
@@ -205,6 +246,7 @@
           </xs:all>
           <xs:attribute name="enabled" type="xs:boolean" default="true"/>
           <xs:attribute name="mark-webgarden-nodes-historical" type="xs:boolean"/>
+          <xs:attribute name="exclude-child-applications" type="xs:boolean"/>
         </xs:complexType>
       </xs:element>
       <xs:element name="standalone-applications" minOccurs="0">
@@ -216,6 +258,7 @@
                   <xs:extension base="AppAgentWithProfilerType">
                     <xs:attribute name="executable" type="xs:string" use="required"/>
                     <xs:attribute name="app-domain-name" type="xs:string"/>
+                    <xs:attribute name="command-line" type="xs:string"/>
                   </xs:extension>
                 </xs:complexContent>
               </xs:complexType>
@@ -243,10 +286,12 @@
       </xs:element>
     </xs:all>
     <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+    <xs:attribute name="azure-use-local-data" type="xs:boolean" default="true"/>
     <xs:attribute name="azure" type="xs:boolean"/>
     <xs:attribute name="azure-role-name" type="xs:string"/>
     <xs:attribute name="azure-role-instance-id" type="xs:string"/>
     <xs:attribute name="append-process-index" type="xs:string"/>
+    <xs:attribute name="log-pull-timeout" type="xs:int" default="60000"/>
   </xs:complexType>
 
   <xs:complexType name="AppAgentType">
@@ -270,11 +315,17 @@
 
   <xs:complexType name="AppAgentBaseType">
     <xs:sequence>
+      <xs:element name="security" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="getterchains" type="xs:boolean" default="true"/>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="eum" minOccurs="0">
         <xs:complexType>
           <xs:attribute name="enabled" type="xs:boolean" default="true"/>
         </xs:complexType>
       </xs:element>
+      <!-- interceptors disabling feature is deprecated in 4.4 -->
       <xs:element name="interceptors" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
@@ -294,11 +345,11 @@
       </xs:element>
       <xs:element name="ipc" minOccurs="0">
         <xs:complexType>
+          <!-- connect-timeout is deprecated in 4.4 -->
           <xs:attribute name="connect-timeout" type="xs:unsignedInt"/>
           <xs:attribute name="response-timeout-default" type="xs:int"/>
           <xs:attribute name="response-timeout-performance-counters" type="xs:int"/>
           <xs:attribute name="response-timeout-instance-counts" type="xs:int"/>
-          <xs:attribute name="response-timeout-log-pull" type="xs:int"/>
         </xs:complexType>
       </xs:element>
       <xs:element name="app-agent-configuration" minOccurs="0">
@@ -327,10 +378,24 @@
     <xs:all>
       <xs:element name="callgraph" minOccurs="0">
         <xs:complexType>
+          <xs:all>
+            <xs:element name="module-blacklists" minOccurs="0">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="module" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:attribute name="name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:all>
           <xs:attribute name="hooks" type="xs:boolean"/>
           <xs:attribute name="watchdog" type="xs:boolean"/>
           <xs:attribute name="overridedss" type="xs:boolean"/>
           <xs:attribute name="overridehooks" type="xs:boolean"/>
+          <xs:attribute name="seeddss" type="xs:boolean"/>
         </xs:complexType>
       </xs:element>
       <xs:element name="treat-verification-exception-methods" minOccurs="0">
@@ -338,12 +403,33 @@
           <xs:attribute name="value" type="xs:int"/>
         </xs:complexType>
       </xs:element>
+      <xs:element name="poco-instrumentations-limit" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="value" type="xs:int" use="required"/>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="instrument-defaultdomain" minOccurs="0">
         <xs:complexType>
           <xs:attribute name="enabled" type="xs:boolean"/>
         </xs:complexType>
       </xs:element>
+      <!-- legacy-instrumentation-decisions is deprecated. It's here only for config.xml backward compatibility. -->
       <xs:element name="legacy-instrumentation-decisions" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="enabled" type="xs:boolean"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="add-assembly-reference" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="enabled" type="xs:boolean"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="full-no-dependency-mode" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="enabled" type="xs:boolean" default="false"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="verify-stackwalk" minOccurs="0">
         <xs:complexType>
           <xs:attribute name="enabled" type="xs:boolean"/>
         </xs:complexType>
@@ -413,8 +499,64 @@
           <xs:attribute name="duration" type="xs:int" default="0"/>
         </xs:complexType>
       </xs:element>
+      <xs:element name="successful-exit-code" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="value" type="xs:int" default="0"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="disabled-features" type="DisabledFeaturesType" minOccurs="0"/>
+      <xs:element name="event-mask" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="value" type="xs:unsignedInt" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="standalone-agent" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="runtime-reinstrumentation" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+          <xs:attribute name="interval" type="xs:unsignedInt" default="60000"/>
+          <xs:attribute name="config-update-retry" type="xs:unsignedInt" default="10"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="instrumentation-launchcondition" minOccurs="0">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="processes"  minOccurs="0" maxOccurs="1">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="process" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:attribute name="name" type="xs:string" use="required" />
+                      <xs:attribute name="launchcondition" type="xs:string" default="Always" />
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:all>
+          <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="agent-bootstrap-instrumentations" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="instrumentation" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:attribute name="fullmethodsignature" type="xs:string" use="required" />
+                <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:all>
     <xs:attribute name="enabled" type="xs:boolean" default="true"/>
   </xs:complexType>
-
+  <xs:complexType name="DisabledFeaturesType">
+    <xs:attribute name="value" type="xs:string" default="NONE"/>
+  </xs:complexType>
 </xs:schema>

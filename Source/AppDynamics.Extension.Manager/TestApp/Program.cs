@@ -1,7 +1,9 @@
 ﻿using AppDynamics.Infrastructure;
 using AppDynamics.Infrastructure.Framework.Extension;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,8 +19,35 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-            testEncryption();
+            //testEncryption();
+            //DisplayEventLogProperties();
+            runExtension();
 
+            //Console.ReadLine();
+        }
+
+        static void DisplayEventLogProperties()
+        {
+            // Iterate through the current set of event log files,
+            // displaying the property settings for each file.
+
+            EventLog[] eventLogs = EventLog.GetEventLogs();
+            foreach (EventLog e in eventLogs)
+            {
+                try
+                {
+
+                    Console.WriteLine();
+                    Console.WriteLine("{0}:", e.LogDisplayName);
+                    Console.WriteLine("  Log name = \t\t {0}", e.Log);
+                    Console.WriteLine("  Number of event log entries = {0}", e.Entries.Count.ToString());
+                }
+                catch (Exception) { }
+            }
+        }
+
+        static void runExtension()
+        {
             ExtensionLoader exeLoader = new ExtensionLoader();
 
             exeLoader.CreateExtensions();
@@ -34,9 +63,7 @@ namespace TestApp
 
             Console.WriteLine("Extensions stopped- Press Enter to exit.");
             Console.ReadLine();
-
         }
-
         static void testEncryption()
         {
             string pwd = Console.ReadLine();

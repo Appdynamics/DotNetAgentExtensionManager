@@ -9,6 +9,7 @@ namespace AppDynamics.Infrastructure.Framework.Extension.Providers
     public class ControllerRestApiProvider : IDataProvider
     {
         private static readonly AppDynamicsAgentType agentConfig = AgentConfig.LoadAgentConfiguration();
+        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Make a request to the AppDynamics REST API
@@ -18,6 +19,20 @@ namespace AppDynamics.Infrastructure.Framework.Extension.Providers
         public string Request(object value)
         {
             var restParams = (RestRequest)value;
+
+            #region to enable tls1.2, probably not needed with .net 4.5
+
+            if (_logger.IsDebugEnabled)
+                _logger.Debug("Making request to post event");
+
+            if (agentConfig.controller.ssl && agentConfig.controller.enable_tls12)
+            {
+                if (_logger.IsDebugEnabled)
+                    _logger.Debug("Using security protocol TLS1.2");
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            }
+            #endregion
 
             var request = (HttpWebRequest)WebRequest.Create(FormatUrl(restParams.Url));
 
