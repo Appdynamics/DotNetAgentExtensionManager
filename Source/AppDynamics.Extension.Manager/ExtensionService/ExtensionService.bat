@@ -1,6 +1,38 @@
 @ECHO OFF
 
+REM   #############################################################################
+REM   AppDynamics Manager for .Net Agent Extension
+REM   NAME: ExtensionService.bat
+REM   
+REM   Author: Anurag Bajpai @ AppDynamics Inc. (abajpai@appdynamics.com)
+REM   
+REM   Overview:  This script will perform following operations-
+REM   1- Manage extension service (start/stop/install/uninstall) for unattended installation
+REM   2- Encrypt password to use with event based extensions
+REM  
+REM   VERSION HISTORY
+REM   Version: 1.5.0
+REM   Release date: Dec 12 2017
+REM  
+REM   1- Use of encrypted password for controller communication.
+REM  
+REM  Copyright 2015 AppDynamics LLC
+REM  
+REM  Licensed under the Apache License, Version 2.0 (the "License");
+REM  you may not use this file except in compliance with the License.
+REM  You may obtain a copy of the License at
+REM  
+REM      http://www.apache.org/licenses/LICENSE-2.0
+REM  
+REM  Unless required by applicable law or agreed to in writing, software
+REM  distributed under the License is distributed on an "AS IS" BASIS,
+REM  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+REM  See the License for the specific language governing permissions and
+REM  limitations under the License.
+REM   #############################################################################
+
 REM Variables 
+
 SET SERVICE_NAME=AppDynamics.Agent.Extension_Service
 SET DISPLAY_NAME=AppDynamics.Agent.Extension
 SET SCRIPT_DIR=%~dp0

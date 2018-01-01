@@ -99,12 +99,12 @@ namespace AppDynamics.Extension.CCT.Infrastructure
             // HACK for #86008 
             if (String.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["ConfigFilePath"]))
             {
-                ConfigFilelocation = ConfigurationManager.AppSettings["ConfigFilePath"].Trim();
-                _logger.Trace("checking app.config for Config File Path @" + ConfigFilelocation);
+                ConfigFilelocation = AppDynamics.Infrastructure.ResourceStrings.AgentConfigFullPath;
             }
             else
             {
-                ConfigFilelocation = AppDynamics.Infrastructure.ResourceStrings.AgentConfigFullPath;
+                ConfigFilelocation = ConfigurationManager.AppSettings["ConfigFilePath"].Trim();
+                _logger.Trace("checking app.config for Config File Path @" + ConfigFilelocation);
             }
 
             isConfigFileLocated = File.Exists(ConfigFilelocation);
