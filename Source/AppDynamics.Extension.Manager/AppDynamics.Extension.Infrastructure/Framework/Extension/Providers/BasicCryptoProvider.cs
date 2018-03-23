@@ -18,7 +18,7 @@ namespace AppDynamics.Infrastructure.Framework.Extension.Providers
 
             textBytes = textBytes.Reverse().ToArray();
 
-            for (int i=0; i<textBytes.Length-1;i++)
+            for (int i=0; i<textBytes.Length;i++)
             {
                 int b = (textBytes[i] < 250) ? textBytes[i] + 3 : textBytes[i];
 

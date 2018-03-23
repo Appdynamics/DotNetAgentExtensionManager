@@ -161,20 +161,7 @@ namespace AppDynamics.Infrastructure.Framework.Extension
 
                 if (_extension.ControllerInfo.Encrypted)
                 {
-                    ICryptoProvider cryptoObj = null;
-
-                    #region Tiny CryptoProvider factory
-
-                    if ("false".Equals(System.Configuration.ConfigurationManager.AppSettings["BasicEncryption"],
-                        StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        cryptoObj = new RijndaelCryptoProvider();
-                    }
-                    else
-                    {
-                        cryptoObj = new BasicCryptoProvider();
-                    }
-                    #endregion
+                    ICryptoProvider cryptoObj = CryptoProviderFactory.GetCryptoProvider();
 
                     _extension.ControllerInfo.Password =
                         cryptoObj.DecryptString(_extension.ControllerInfo.Password);

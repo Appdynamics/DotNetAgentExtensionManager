@@ -82,6 +82,9 @@
     <Compile Include="Framework\Extension\Model\PerformanceCounterDetail.cs" />
     <Compile Include="Framework\Extension\Providers\BasicCryptoProvider.cs" />
     <Compile Include="Framework\Extension\Providers\CommandListner.cs" />
+    <Compile Include="Framework\Extension\Providers\CredManagerCryptoProvider.cs" />
+    <Compile Include="Framework\Extension\Providers\CryptoProviderFactory.cs" />
+    <Compile Include="Framework\Extension\Providers\EnvironmentVariableCryptoProvider.cs" />
     <Compile Include="Framework\Extension\Providers\RijndaelCryptoProvider.cs" />
     <Compile Include="Framework\Extension\Providers\ControllerRestApiProvider.cs" />
     <Compile Include="Framework\Extension\Handlers\PerformanceCounterHandler.cs" />

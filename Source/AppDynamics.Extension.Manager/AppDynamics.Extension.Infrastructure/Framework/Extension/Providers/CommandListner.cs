@@ -37,24 +37,12 @@ namespace AppDynamics.Infrastructure.Framework.Extension.Providers
             {
                 Console.WriteLine("Encrypting password -> " + pwd);
             }
-            ICryptoProvider cprovider = null;
-
-            #region Tiny CryptoProvider factory
-
-            if ("false".Equals(ConfigurationManager.AppSettings["BasicEncryption"],
-                StringComparison.CurrentCultureIgnoreCase))
-            {
-                cprovider = new AppDynamics.Infrastructure.Framework.Extension.Providers.BasicCryptoProvider();
-            }
-            else
-            {
-                cprovider = new AppDynamics.Infrastructure.Framework.Extension.Providers.BasicCryptoProvider();
-            }
-            #endregion
+            ICryptoProvider cprovider = CryptoProviderFactory.GetCryptoProvider();
 
             string encrypted = cprovider.EncryptString(pwd);
 
             Console.WriteLine(encrypted);
         }
+        
     }
 }
