@@ -88,7 +88,7 @@ namespace AppDynamics.Infrastructure.Framework.Extension.Handlers
                     foreach (ExtensionMetric emetric in eInstance.ListExtensionMetrics)
                     {
                         PerformanceCounter pc = new PerformanceCounter(_categoryName,
-                            emetric.MetricName, eInstance.InstanceName);
+                            emetric.MetricName, eInstance.InstanceName, false);
 
                         //pc.ReadOnly = false;
                         // always initializing with 0
@@ -171,22 +171,45 @@ namespace AppDynamics.Infrastructure.Framework.Extension.Handlers
         private CounterCreationDataCollection GetCounterCreationDataCollection(List<ExtensionInstance> listExtensionInstance)
         {
             var counterData = new CounterCreationDataCollection();
+            List<string> metricAdded = new List<string>();
 
-            //Limitation: #limitation All instances contains same set of metrics(counters)
-            foreach (ExtensionMetric em in listExtensionInstance[0].ListExtensionMetrics)
+            foreach(ExtensionInstance eIns in listExtensionInstance)
             {
-                var counter = new CounterCreationData
+                foreach(ExtensionMetric em in eIns.ListExtensionMetrics)
                 {
-                    CounterName = em.MetricName,
-                    CounterType = PerformanceCounterType.NumberOfItems64,
-                    CounterHelp = em.Description
-                };
+                    if (!metricAdded.Contains(em.MetricName))
+                    {
+                        var counter = new CounterCreationData
+                        {
+                            CounterName = em.MetricName,
+                            CounterType = PerformanceCounterType.NumberOfItems64,
+                            CounterHelp = em.Description
+                        };
 
-                counterData.Add(counter);
+                        counterData.Add(counter);
+                        metricAdded.Add(em.MetricName);
 
-                if (_logger.IsDebugEnabled)
-                    _logger.Debug("Added counter {0}", counter.CounterName);
+                        if (_logger.IsDebugEnabled)
+                            _logger.Debug("Added counter {0}", counter.CounterName);
+                    }
+                }
             }
+
+            //Limitation: #limitation All instances contains same set of metrics(counters)##OLD
+            //foreach (ExtensionMetric em in listExtensionInstance[0].ListExtensionMetrics)
+            //{
+            //    var counter = new CounterCreationData
+            //    {
+            //        CounterName = em.MetricName,
+            //        CounterType = PerformanceCounterType.NumberOfItems64,
+            //        CounterHelp = em.Description
+            //    };
+
+            //    counterData.Add(counter);
+
+            //    if (_logger.IsDebugEnabled)
+            //        _logger.Debug("Added counter {0}", counter.CounterName);
+            //}
 
             return counterData;
         }
