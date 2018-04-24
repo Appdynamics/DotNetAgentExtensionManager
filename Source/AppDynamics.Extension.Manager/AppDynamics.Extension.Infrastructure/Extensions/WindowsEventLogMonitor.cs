@@ -101,15 +101,17 @@ namespace AppDynamics.Infrastructure.Extensions
             if (isValidEvent(e.Entry))
             {
                 string message = e.Entry.Message;
-                string summary = string.Format(_summaryFormat, 
-                    e.Entry.EntryType, 
+                string summary = string.Format(_summaryFormat,
+                    e.Entry.EntryType,
                     e.Entry.Source,
                     e.Entry.EventID,
-                    e.Entry.InstanceId, 
-                    e.Entry.MachineName, 
+                    e.Entry.InstanceId,
+                    e.Entry.MachineName,
                     e.Entry.Message);
 
                 summary = summary.Replace("&", " and ");
+
+                addProperties(e);
 
                 string comment = "Event originated from the Windows event log and provided by the .Net extension service";
 
@@ -121,16 +123,36 @@ namespace AppDynamics.Infrastructure.Extensions
                     EventProperties);
 
                 if (logger.IsTraceEnabled)
-                    logger.Trace(String.Format("posting Event Log for {0}-{1}=>{2}", _logName, e.Entry.Source, summary));
+                    logger.Trace(String.Format("posting Event Log for Log={0}-{1}=>{2}", _logName, e.Entry.Source, summary));
 
                 PostEventToController(args);
             }
             else
             {
                 if (logger.IsTraceEnabled)
-                    logger.Trace(String.Format("Not posting Event Log for {0}-{1}", _logName, e.Entry.Source));
+                    logger.Trace(String.Format(
+                        "Not posting Event Log for Log={0}, Source={1}, Id={2}, Type={3}",
+                        _logName, e.Entry.Source, e.Entry.EventID, e.Entry.EntryType.ToString()));
 
             }
+        }
+
+        private void addProperties(EntryWrittenEventArgs e)
+        {
+            if (EventProperties == null)
+            {
+                logger.Warn("Needed to initialize event properties in extension");
+                EventProperties = new Dictionary<string, string>();
+            }
+
+            if (!EventProperties.ContainsKey("eventid"))
+                EventProperties.Add("eventid", e.Entry.EventID.ToString());
+
+            if (!EventProperties.ContainsKey("eventsource"))
+                EventProperties.Add("eventsource", e.Entry.Source);
+
+            if (!EventProperties.ContainsKey("machinename"))
+                EventProperties.Add("machinename", e.Entry.MachineName);
         }
 
         private bool isValidEvent(EventLogEntry entry)

@@ -286,14 +286,17 @@ namespace AppDynamics.Infrastructure.Framework.Extension
             try
             {
                 string url = GetURL(e);
-
+                char[] trimChar = { '&', ' ' };
+                string body = e.GetInURL().Trim(trimChar);
                 string _username = _extension.ControllerInfo.UserName + "@" + _extension.ControllerInfo.AccountName;
 
                 if (_logger.IsTraceEnabled)
-                    _logger.Trace("New event received: {0}", url);
+                    _logger.Trace("New event received: {0} -- {1}", url, body);
+
                 var result = _restApi.Request(new RestRequest
                 {
                     Url = url,
+                    Body = body,
                     Username = _username,
                     Password = _extension.ControllerInfo.Password,
                     Verb = WebRequestMethods.Http.Post
@@ -320,18 +323,19 @@ namespace AppDynamics.Infrastructure.Framework.Extension
             if (_logger.IsTraceEnabled)
                 _logger.Trace("URL forming-1: {0}", url);
  
-            url.Append(e.GetInURL());
+            // Not needed, old way of adding event in url
+            //url.Append(e.GetInURL());
 
-            if (_logger.IsTraceEnabled)
-                _logger.Trace("URL forming-2: {0}", url);
+            //if (_logger.IsTraceEnabled)
+            //    _logger.Trace("URL forming-2: {0}", url);
 
             // For safe side, it url gets encoded from xml
             url.Replace("&amp;", "&");
             // To avoid url in message (need to make sure url is not starting with http)
             url.Replace("://", ": //");
 
-            if (_logger.IsTraceEnabled)
-                _logger.Trace("URL forming-3: {0}", url);
+            //if (_logger.IsTraceEnabled)
+            //    _logger.Trace("URL forming-3: {0}", url);
 
             return url.ToString();
         }

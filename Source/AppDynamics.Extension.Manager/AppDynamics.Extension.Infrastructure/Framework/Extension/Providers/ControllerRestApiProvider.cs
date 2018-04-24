@@ -25,13 +25,7 @@ namespace AppDynamics.Infrastructure.Framework.Extension.Providers
             if (_logger.IsDebugEnabled)
                 _logger.Debug("Making request to post event");
 
-            if (agentConfig.controller.ssl && agentConfig.controller.enable_tls12)
-            {
-                if (_logger.IsDebugEnabled)
-                    _logger.Debug("Using security protocol TLS1.2");
-
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            }
+            verifyTLS12();
             #endregion
 
             var request = (HttpWebRequest)WebRequest.Create(FormatUrl(restParams.Url));
@@ -47,17 +41,40 @@ namespace AppDynamics.Infrastructure.Framework.Extension.Providers
 
             var auth = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(restParams.Username + ":" + restParams.Password));
             request.Headers.Add("Authorization", auth);
+
             request.PreAuthenticate = true;
 
-            using (var response = (HttpWebResponse) request.GetResponse())
-            {
-                using (var dataStream = response.GetResponseStream())
-                {
-                    if (dataStream == null) return string.Empty;
+            request.ContentType = "application/x-www-form-urlencoded";
 
-                    var reader = new StreamReader(dataStream);
-                    return reader.ReadToEnd();
+            byte[] byteArray = Encoding.UTF8.GetBytes(restParams.Body);
+            request.ContentLength = byteArray.Length;
+
+            using (var requestStream = request.GetRequestStream())
+            {
+                requestStream.Write(byteArray, 0, byteArray.Length);
+
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (var dataStream = response.GetResponseStream())
+                    {
+                        if (dataStream == null) return string.Empty;
+
+                        var reader = new StreamReader(dataStream);
+
+                        return reader.ReadToEnd();
+                    }
                 }
+            }
+        }
+
+        private static void verifyTLS12()
+        {
+            if (agentConfig.controller.ssl && agentConfig.controller.enable_tls12)
+            {
+                if (_logger.IsDebugEnabled)
+                    _logger.Debug("Using security protocol TLS1.2- " + ServicePointManager.SecurityProtocol);
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             }
         }
 
@@ -109,6 +126,8 @@ namespace AppDynamics.Infrastructure.Framework.Extension.Providers
     public class RestRequest
     {
         public string Url { get; set; }
+
+        public string Body { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Verb { get; set; }
