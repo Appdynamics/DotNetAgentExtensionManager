@@ -136,7 +136,7 @@ GOTO END
 
 :encrypt
 
-%EXTENSION_EXE_PATH% -%1 %2
+CALL "%EXTENSION_EXE_PATH%" -%1 %2
 if %ERRORLEVEL% NEQ 0 ECHO Unable to encrypt. 
 
 GOTO END
