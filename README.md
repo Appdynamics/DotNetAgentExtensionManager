@@ -11,13 +11,21 @@
   </li>
 </ul>
 <ul>
-  <li style="list-style-type: none;"><span style="font-weight: bold;">Files</span><ul><li style="padding-left: 10px;">* <span>AppDynamics.Extension.Manager.exe</span><span>- The Extension Manager UI, use this to enable and configure extensions and to install/remove the AppDynamics.Agent.Extension Windows service.</span></li><li style="padding-left: 10px;">* <span>ExtensionService.exe</span><span>- The AppDynamics.Agent.Extension Windows service executable, a lightweight Windows service which continuously collects metric data for all .NET extensions and stores this data in Windows Performance Counters. These Performance Counters are polled continuously and their values are sent to the Controller by the AppDynamics.Agent.Coordinator service.</span></li><li style="padding-left: 10px;">* <span>AppDynamics.Extension.CCT.exe</span><span>- Configures which Windows Performance Counter metrics will be sent to the AppDynamics Controller via the AppDynamics.Agent.Coordinator Windows service.</span></li><li style="padding-left: 10px;">* <span>ExtensionService.bat</span><span>- Manages extension service without UI. This file can be used for unattended installation and managing of extension service.</span></li></ul></li></ul>
+  <li style="list-style-type: none;"><span style="font-weight: bold;">Files</span>
+    <ul>
+      <li style="padding-left: 10px;"><b>* <span>AppDynamics.Extension.Manager.exe</span></b><span>- The Extension Manager UI, use this to enable and configure extensions and to install/remove the AppDynamics.Agent.Extension Windows service.</span></li>
+    <li style="padding-left: 10px;"><b>* <span>ExtensionService.exe</span></b><span>- The AppDynamics.Agent.Extension Windows service executable, a lightweight Windows service which continuously collects metric data for all .NET extensions and stores this data in Windows Performance Counters. These Performance Counters are polled continuously and their values are sent to the Controller by the AppDynamics.Agent.Coordinator service.</span></li>
+     <li style="padding-left: 10px;"><b>* <span>AppDynamics.Extension.CCT.exe</span></b><span>- Configures which Windows Performance Counter metrics will be sent to the AppDynamics Controller via the AppDynamics.Agent.Coordinator Windows service.</span></li>
+      <li style="padding-left: 10px;"><b>* <span>ExtensionService.bat</span></b><span>- Manages extension service without UI. This file can be used for unattended installation and managing of extension service.</span></li></ul></li></ul>
 
 <h2><span>Prerequisites</span></h2>
 <ul><li><span>The AppDynamics .NET Agent</span></li><li><span>.NET 4.5 or later</span></li></ul>
+<li><img src="https://github.com/Appdynamics/DotNetAgentExtensionManager/blob/master/Source/AppDynamics.Extension.Manager/Picture%201.png"></li><li>
 
 <h2><span>Installation</span></h2>
 <p><span>Download and unzip the archive to any fixed location, such as %ProgramData%\Appdynamics or just C:\</span> <br> <span>Once unzipped, you should see previously mentioned files and folders, along with other required configuration or library files.</span></p>
+
+
 <h2><span>Overview of Extension Types</span></h2>
 <p>
   <span>Presently, the .NET agent extension service supports following extensions types:</span>
@@ -37,8 +45,9 @@
 </ol>
 <p>
   <span style="font-weight: bold;">By default, all provided extensions are disabled.</span>
-  <span>You can enable them by editing their corresponding XML configuration file. Please visit their respective extension pages for more details to enable.</span>
+  <span>You can enable them by editing their corresponding XML configuration file. Please visit their respective extension pages for more details to enable.c    </span>
 </p>
+
 <h2><span>Getting Started</span></h2>
 <ol start="1"><li><span>Open AppDynamics.Extension.Manager.exe</span><ul><li>* <span>Click the Install button to install the AppDynamics.Agent.Extension Windows service.</span><img alt="AppDynamics Dotnet Agent ExtensionManager" src="https://www.appdynamics.com/media/uploaded-files/1491249335/extensionmanager.png" style="padding: 8px 0;"></li><li>* <span>By defualt we dont have any extensions loaded. We need to create a new folder for any extension, under [Extension Manager]/Extensions directory. Extension folder must have valid extension.xml file in it. Once copied we should be able to see extension loaded upon relaunching extension manager ui.</span></li></ul><ul><li>* <span>Click the "Manage" button next to any extension to edit the XML configuration file located as</span><span style="">/Extensions/[Extension Name]/extension.xml</span><span>. Alternatively the XML editor of your choice can be used to edit and save these files.</span></li><li><img src="https://www.appdynamics.com/media/uploaded-files/1491249335/extensionservice-start.png"></li><li>* <span>Now click <i>Start</i> to start extension service.</span></li></ul></li></ol>
 
